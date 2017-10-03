@@ -1,0 +1,14 @@
+Guide to build JMETIS - JAVA binding for METIS v5.1
+1. download metis package v5.1
+http://glaros.dtc.umn.edu/gkhome/metis/metis/download
+
+2. compile metis by CMake & Visual Studio
++ unzip the package downloaded, 
++ follow the instructions in install.txt
+-> two lib 32/64 bit: metis32.lib and metis64.lib
+
+3. compile jmetis (JNI) by Visual Studio
+-> a lib dynamic metis-windows-x86.dll or metis-windows-x64.dll
+
+4. build metis-java by NETBEAN
+-> a package jmetis.jar utilisable for JAVA 

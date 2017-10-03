@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package testJMetis;
 
 import java.util.Arrays;
@@ -13,15 +7,20 @@ import jmetis.MetisPointer;
 import jmetis.MetisStatus;
 
 /**
- *
+ * Test jmetis package
  * @author dinhvan
  */
-public class metisDemo {
+public class MetisDemo {
     public static void main(String[] args) {
-        metisDemo test = new metisDemo();
+        MetisDemo test = new MetisDemo();
         JMetis.setExceptionsEnabled(true);
+        // create a Metis array of options
         test.checkMetisOptions();
+        // test default options
+        test.testSetDefaultOptions();
+        // convert a Mesh Partition
         test.testMeshPartNodal();
+        // convert a Mesh to a Graph
         test.testMesh2NodalGraph();
     }
     
@@ -50,10 +49,9 @@ public class metisDemo {
     
     private void testSetDefaultOptions(){
         System.out.println("\n=============================================\n");
-        System.out.println("\n testSetDefaultOptions \n");
+        System.out.println("\n test JMetis.METIS_SetDefaultOptions \n");
         MetisOptions options = new MetisOptions();
         
-        //int[] options = null;
         System.out.println("Options init in Java " + Arrays.toString(options.getOptions()));
         checkResult(JMetis.METIS_SetDefaultOptions(options), "METIS_SetDefaultOptions");
         System.out.println("Options set in C by METIS " + Arrays.toString(options.getOptions()));
@@ -61,7 +59,7 @@ public class metisDemo {
 
     private void testMeshPartNodal() {
         System.out.println("\n=============================================\n");
-        System.out.println("\n TestMeshPartNodal \n");
+        System.out.println("\n Test JMetis.partMeshNodal \n");
         int[] nbrElem = {6};
         int[] nbrNode = {7};
         int[] nbrPart = {2};
@@ -72,7 +70,6 @@ public class metisDemo {
         int[] objval = {0};
         
         MetisOptions options = new MetisOptions();
-        
         options.METIS_OPTION_PTYPE = MetisOptions.METIS_PTYPE_KWAY;
         options.METIS_OPTION_OBJTYPE = MetisOptions.METIS_OBJTYPE_CUT;
         options.METIS_OPTION_CTYPE = MetisOptions.METIS_CTYPE_SHEM;
@@ -92,10 +89,7 @@ public class metisDemo {
         
         System.out.println("Options " + Arrays.toString(options.getOptions()));
         
-        //int res = JMetis.METIS_PartMeshNodal(nbrElem, nbrNode, elemPtr, elemInd, null, null,
-        int res = JMetis.partMeshNodal(6, 7, elemPtr, elemInd, null, null,
-                //nbrPart, null, options.getOptions(), objval, epart, npart);
-                2, null, options.getOptions(), objval, epart, npart);
+        int res = JMetis.partMeshNodal(6, 7, elemPtr, elemInd, null, null, 2, null, options.getOptions(), objval, epart, npart);
         checkResult(res, "METIS_PartMeshNodal");
         
         System.out.println("objval: " + Arrays.toString(objval));
