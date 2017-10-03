@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jmetis;
 
 /**
  * implementation JAVA of METIS (seeing Metis v5.1 Manual)
- *
  * @author dinhvan
  */
 public class JMetis {
@@ -39,9 +33,24 @@ public class JMetis {
      */
     public static void initialize() {
         if (!initialized) {
-            String path = System.getProperty("user.dir");
-            //System.load("C:\\_UsersDatas\\dinhvan\\Dropbox\\THESE\\VSworkspace\\jmetis\\Release\\jmetis.dll");
-            System.load(path + "/jmetis.dll");
+            String path = System.getProperty("user.dir")+"/lib/";
+            String libname="jmetis";
+            if(System.getProperty("os.name").contains("Windows")){
+                libname += "-windows";
+                if(System.getProperty("os.arch").contains("64"))
+                    libname += "-x64";
+                else
+                    libname += "x86";
+            }else
+                System.err.println("Can not load the lib on not-windows system");
+            libname += ".dll";
+            try{
+                System.load(path + libname);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return;
+            }
+            
             initialized = true;
         }
     }
