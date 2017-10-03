@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package jmetis;
 
 /**
- *
+ * indicator for a METIS function's return
  * @author dinhvan
  */
 public class MetisStatus {
@@ -47,6 +41,6 @@ public class MetisStatus {
             case METIS_ERROR_MEMORY: return "METIS_ERROR_MEMORY";
             case METIS_ERROR: return "METIS_ERROR";
         }
-        return "INVALID cusparseStatus";
+        return "INVALID metisStatus";
     }
 }
