@@ -1,5 +1,11 @@
 package jmetis;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
+
 /**
  * implementation JAVA of METIS (seeing Metis v5.1 Manual)
  * @author dinhvan
@@ -17,10 +23,6 @@ public class JMetis {
      */
     private static boolean exceptionsEnabled = false;
 
-    /* Private constructor to prevent instantiation */
-    private JMetis() {
-    }
-
     // Initialize the native library.
     static {
         initialize();
@@ -33,26 +35,46 @@ public class JMetis {
      */
     public static void initialize() {
         if (!initialized) {
-            String path = System.getProperty("user.dir")+"/lib/";
+            
             String libname="jmetis";
             if(System.getProperty("os.name").contains("Windows")){
                 libname += "-windows";
                 if(System.getProperty("os.arch").contains("64"))
                     libname += "-x64";
                 else
-                    libname += "x86";
+                    libname += "-x86";
             }else
                 System.err.println("Can not load the lib on not-windows system");
             libname += ".dll";
+            /*
             try{
+                String path = System.getProperty("user.dir")+"/resources/";
                 System.load(path + libname);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
-                return;
+                loadLib(libname);
             }
-            
+            */
+            loadLib(libname);
             initialized = true;
         }
+    }
+    
+    private static void loadLib(String libName){
+        try {
+            // get resources from .dll
+            InputStream in = ClassLoader.getSystemClassLoader().getResourceAsStream(libName);
+            File fileout = new File(System.getProperty("java.io.tmpdir")+"/"+libName);
+            OutputStream out = FileUtils.openOutputStream(fileout);
+            IOUtils.copy(in, out);
+            in.close();
+            out.close();
+            System.load(fileout.toString());
+            System.out.println("Loading " + fileout.toString() + " ... SUCCES!");
+        } catch (Exception e) {
+            throw new NullPointerException("Can not load library " + libName);
+        }
+        
     }
 
     /**

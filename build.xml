@@ -70,4 +70,11 @@
     nbproject/build-impl.xml file. 
 
     -->
+    <target name="package-for-store" depends="jar">
+        <jar destfile="package/jmetis-1.0.2-SNAPSHOT.jar" filesetmanifest="skip">
+            <zipgroupfileset dir="dist" includes="*.jar"/>
+            <zipgroupfileset dir="dist/lib" includes="*.jar"/>
+        </jar>
+    </target>
+        
 </project>
